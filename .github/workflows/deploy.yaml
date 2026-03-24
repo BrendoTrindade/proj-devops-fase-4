@@ -40,8 +40,8 @@ jobs:
       PUBLIC_IP: ${{secrets.PUBLIC_IP}}
     runs-on: ubuntu-latest
     steps:
-          - name: Deploy ec2 ssh
-            run: |
+         - name: Deploy ec2 ssh
+           run: |
               echo "$CHAVE_PUBLICA_INSTANCE" > proj-3fases.pem
               chmod 400 proj-3fases.pem
               ssh -i proj-3fases.pem -o StrictHostKeyChecking=no ec2-user@$PUBLIC_IP   << EOF
