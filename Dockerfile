@@ -2,7 +2,7 @@
 FROM nginx:alpine
 
 # Copia os arquivos do website para o diretório do Nginx
-COPY . /usr/share/nginx/html/
+COPY website/ /usr/share/nginx/html/
 
 # Expõe a porta 80 (documentação - não abre a porta realmente)
 EXPOSE 80
