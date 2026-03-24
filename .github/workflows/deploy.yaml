@@ -33,21 +33,21 @@ jobs:
 
 
   job2:
-    name: build_ecr
+    name: deploy_ec2
     needs: job1
     env:
       CHAVE_PUBLICA_INSTANCE: ${{secrets.CHAVE_PUBLICA_INSTANCE}}
       PUBLIC_IP: ${{secrets.PUBLIC_IP}}
     runs-on: ubuntu-latest
     steps:
-         - name: Deploy ec2 ssh
-           run: |
-              echo "$CHAVE_PUBLICA_INSTANCE" > proj-3fases.pem
-              chmod 400 proj-3fases.pem
-              ssh -i proj-3fases.pem -o StrictHostKeyChecking=no ec2-user@$PUBLIC_IP   << EOF
-              aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 447356678672.dkr.ecr.us-east-1.amazonaws.com
-              docker pull 447356678672.dkr.ecr.us-east-1.amazonaws.com/ecr_lab_fases:v1.0
-              docker run -d -p 80:80 --name app-fases 447356678672.dkr.ecr.us-east-1.amazonaws.com/ecr_lab_fases:v1.0
-              docker ps
-              EOF
-              rm proj-3fases.pem
+     - name: Deploy ec2 ssh
+       run: |
+           echo "$CHAVE_PUBLICA_INSTANCE" > proj-3fases.pem
+           chmod 400 proj-3fases.pem
+           ssh -i proj-3fases.pem -o StrictHostKeyChecking=no ec2-user@$PUBLIC_IP   << EOF
+           aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 447356678672.dkr.ecr.us-east-1.amazonaws.com
+           docker pull 447356678672.dkr.ecr.us-east-1.amazonaws.com/ecr_lab_fases:v1.0
+           docker run -d -p 80:80 --name app-fases 447356678672.dkr.ecr.us-east-1.amazonaws.com/ecr_lab_fases:v1.0
+           docker ps
+           EOF
+           rm proj-3fases.pem
